@@ -1,12 +1,3 @@
-<script>
-  // An array of URL's
-  var images = [{% for image in collections.images %}
-      '{{ image }}',
-    {% endfor %}];
-
-  var randomIndex = Math.floor(Math.random() * images.length)
-  document.write(window.location.href + images[randomIndex])
-
-  {# window
-  .location.replace(images[randomIndex]); #}
-</script>
+{% for image in collections.images %}
+  {{meta.url}}/{{ image }},
+{% endfor %}
