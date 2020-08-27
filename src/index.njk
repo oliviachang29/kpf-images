@@ -1,6 +1,3 @@
----
-layout: base
----
 <script>
   // An array of URL's
   var images = [{% for image in collections.images %}
@@ -8,8 +5,8 @@ layout: base
     {% endfor %}];
 
   var randomIndex = Math.floor(Math.random() * images.length)
+  document.write(window.location.href + images[randomIndex])
 
-  window
-  .location
-  .replace(images[randomIndex]);
+  {# window
+  .location.replace(images[randomIndex]); #}
 </script>
