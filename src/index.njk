@@ -1,9 +1,15 @@
 ---
 layout: base
-eleventyNavigation:
-  key: Home
 ---
+<script>
+  // An array of URL's
+  var images = [{% for image in collections.images %}
+      '{{ image }}',
+    {% endfor %}];
 
-<div class="container">
-    <h1>A blank 11ty project.</h1>
-</div>
+  var randomIndex = Math.floor(Math.random() * images.length)
+
+  window
+  .location
+  .replace(images[randomIndex]);
+</script>
