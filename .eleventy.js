@@ -1,6 +1,7 @@
 const pluginRss = require("@11ty/eleventy-plugin-rss");
 const pluginNavigation = require("@11ty/eleventy-navigation");
 const markdownIt = require("markdown-it");
+const fs = require('fs');
 
 const fg = require("fast-glob");
 const images = fg.sync(["src/assets/images/*.{jpg,jpeg,png}", "!**/_site"]);
@@ -18,13 +19,18 @@ module.exports = function (config) {
 
   config.addCollection("images", function (collection) {
     return images.map((url) => {
-        urlWithoutSrc = url.slice(url.indexOf("/"), url.length);
-        sharp(url)
-            .resize(600, 800)
-            .toFile(__dirname + `/dist${urlWithoutSrc}`, (err, info) => { console.log(info);console.error(err) });
+        imageName = url.slice(url.lastIndexOf("/") + 1, url.length);
 
-        url = urlWithoutSrc;
-        return url;
+        newUrl = `croppedImages/${imageName}`
+
+        sharp(url)
+          .resize(600, 800)
+          .toFile(newUrl, (err, info) => {
+            console.log(info);
+            console.error(err);
+          });
+
+        return newUrl;
     });
   });
 
@@ -67,7 +73,7 @@ module.exports = function (config) {
   // Pass-through files
   config.addPassthroughCopy("src/robots.txt");
   config.addPassthroughCopy("src/site.webmanifest");
-  config.addPassthroughCopy("src/assets/fonts");
+  config.addPassthroughCopy("croppedImages");
 
   // Deep-Merge
   config.setDataDeepMerge(true);
