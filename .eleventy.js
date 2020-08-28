@@ -5,7 +5,6 @@ const fs = require('fs');
 
 const fg = require("fast-glob");
 const images = fg.sync(["src/assets/images/*.{jpg,jpeg,png}", "!**/_site"]);
-const sharp = require("sharp");
 
 const filters = require("./utils/filters.js");
 const transforms = require("./utils/transforms.js");
@@ -19,20 +18,13 @@ module.exports = function (config) {
 
   config.addCollection("images", function (collection) {
     return images.map((url) => {
-        imageName = url.slice(url.lastIndexOf("/") + 1, url.length);
+        url = url.slice(url.indexOf("/") + 1, url.length);
 
-        newUrl = `croppedImages/${imageName}`
-
-        sharp(url)
-          .resize(600, 800)
-          .toFile(newUrl, (err, info) => {
-            console.log(info);
-            console.error(err);
-          });
-
-        return newUrl;
+        return url;
     });
   });
+
+  config.addWatchTarget("./src/assets");
 
   // Filters
   Object.keys(filters).forEach((filterName) => {
@@ -69,7 +61,7 @@ module.exports = function (config) {
   // Pass-through files
   config.addPassthroughCopy("src/robots.txt");
   config.addPassthroughCopy("src/site.webmanifest");
-  config.addPassthroughCopy("croppedImages");
+  config.addPassthroughCopy("src/assets/images");
 
   // Deep-Merge
   config.setDataDeepMerge(true);
