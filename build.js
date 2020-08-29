@@ -8,7 +8,7 @@ let images_string = ''
 const SITE_URL = "https://kpf.netlify.app"
 
 images_array.forEach((url) => {
-    url = path.join(SITE_URL, url);
+    url = `${SITE_URL}/${url}`;
     images_string += url + ', '
 });
 
@@ -19,6 +19,6 @@ fs.mkdir('_dist', { recursive: true }, (err) => {
 fs.copy('images', '_dist/images')
 
 fs.writeFile('_dist/index.html', images_string, 'utf8', (err) => {
-  console.log(err)
+  console.log('wrote dist')
 })
 
