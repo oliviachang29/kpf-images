@@ -2,3 +2,5 @@ node_modules
 _dist
 .env
 coverage/
+# Local Netlify folder
+.netlify
